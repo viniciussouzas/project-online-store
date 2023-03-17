@@ -11,7 +11,7 @@ class Home extends Component {
 
   render() {
     const { productList } = this.state;
-    // Verifica se a lista esta vazia
+    // Verifica se a lista esta vazia!
     const listEmpty = productList.length === 0;
 
     return (
