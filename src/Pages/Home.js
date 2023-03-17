@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import Categories from '../components/Categories';
+import ProductCard from '../components/ProductCard';
+import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends Component {
   constructor() {
     super();
 
-    this.onClickButton = this.onClickButton.bind(this);
-
     this.state = {
       productList: [],
       redirect: false,
+      emptyProductList: false,
     };
   }
+
+  onInputChange = ({ target }) => {
+    this.setState({
+      [target.name]: target.value,
+    });
+  };
 
   // Após o click seta o estado para true, if redirect === true, redireciona para /cart
   onClickButton = () => {
@@ -20,8 +28,24 @@ class Home extends Component {
     });
   };
 
+  handleFetchSearch = async () => {
+    const { queryButton } = this.state;
+
+    const { results } = await getProductsFromCategoryAndQuery('', queryButton);
+
+    if (results.length === 0 || !queryButton) {
+      this.setState({
+        emptyProductList: true,
+      });
+    }
+
+    this.setState({
+      productList: results,
+    });
+  };
+
   render() {
-    const { productList, redirect } = this.state;
+    const { productList, redirect, emptyProductList } = this.state;
     // Verifica se a lista esta vazia!
     const listEmpty = productList.length === 0;
     // Verifica se redirect é true
@@ -30,18 +54,44 @@ class Home extends Component {
     // Redireciona
     if (isRedirect) return <Redirect to="/cart" />;
 
+    // Map do estado productList, que renderiza a lista de produtos pesquisados
+    const mappedProductList = productList.map((product) => (
+      <ProductCard
+        key={ product.id }
+        thumbnail={ product.thumbnail }
+        title={ product.title }
+        price={ product.price }
+      />
+    ));
+
     return (
       <div>
-        <input type="text" placeholder="Faça aqui sua busca" />
-        <button>Pesquisar</button>
+        <input
+          name="queryButton"
+          type="text"
+          placeholder="Faça aqui sua busca"
+          onChange={ this.onInputChange }
+          data-testid="query-input"
+        />
+        <button
+          onClick={ this.handleFetchSearch }
+          data-testid="query-button"
+        >
+          Pesquisar
+        </button>
+        {
+          emptyProductList ? <p>Nenhum produto foi encontrado</p>
+            : mappedProductList
+        }
         {/* Caso a lista esteja vazia, renderiza a mensagem */}
         {listEmpty
-          ? (
-            <p data-testid="home-initial-message">
+          && (
+            <p
+              data-testid="home-initial-message"
+            >
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>
-          )
-          : productList }
+          )}
 
         <button
           type="button"
@@ -50,6 +100,8 @@ class Home extends Component {
         >
           Carrinho de Compras
         </button>
+
+        <Categories />
       </div>
     );
   }
