@@ -3,6 +3,21 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class ProductCard extends Component {
+  addToCart = () => {
+    const { title, price, thumbnail, id } = this.props;
+    const product = [{ title, price, thumbnail, id }];
+
+    if (localStorage.getItem('products') === null) {
+      localStorage.setItem('products', JSON.stringify([product]));
+    } else {
+      localStorage
+        .setItem(
+          'products',
+          JSON.stringify([...JSON.parse(localStorage.getItem('products')), product]),
+        );
+    }
+  };
+
   render() {
     const { title, price, thumbnail, id } = this.props;
 
@@ -13,6 +28,12 @@ class ProductCard extends Component {
         </Link>
         <p>{title}</p>
         <p>{price}</p>
+        <button
+          onClick={ this.addToCart }
+          data-testid="product-add-to-cart"
+        >
+          Adicionar ao Carrinho
+        </button>
       </div>
     );
   }
