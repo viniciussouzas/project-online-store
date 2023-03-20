@@ -5,17 +5,19 @@ import { Link } from 'react-router-dom';
 class ProductCard extends Component {
   addToCart = () => {
     const { title, price, thumbnail, id } = this.props;
-    const product = [{ title, price, thumbnail, id }];
+    const product = { title, price, thumbnail, id, quantity: 1 };
 
-    if (localStorage.getItem('products') === null) {
-      localStorage.setItem('products', JSON.stringify([product]));
+    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+
+    const existingProduct = storedProducts.find((p) => p.id === id);
+
+    if (existingProduct) {
+      existingProduct.quantity += 1;
     } else {
-      localStorage
-        .setItem(
-          'products',
-          JSON.stringify([...JSON.parse(localStorage.getItem('products')), product]),
-        );
+      storedProducts.push(product);
     }
+
+    localStorage.setItem('products', JSON.stringify(storedProducts));
   };
 
   render() {

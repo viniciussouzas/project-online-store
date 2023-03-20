@@ -4,17 +4,11 @@ class ShoppingCart extends Component {
   constructor() {
     super();
 
+    const cartItems = JSON.parse(localStorage.getItem('products')) || [];
+    console.log(cartItems);
     this.state = {
-      cart: [],
-    };
-  }
-
-  componentDidMount() {
-    const cartItems = JSON.parse(localStorage.getItem('products'));
-
-    this.setState({
       cart: cartItems,
-    });
+    };
   }
 
   render() {
@@ -23,6 +17,18 @@ class ShoppingCart extends Component {
 
     const cartEmpty = cart.length === 0;
 
+    const mappedCart = cart.map((item) => (
+      <div key={ item.id }>
+        <h2 data-testid="shopping-cart-product-name">{item.title}</h2>
+        <p
+          data-testid="shopping-cart-product-quantity"
+        >
+          {`Quantidade: ${item.quantity}`}
+        </p>
+        <p>{`Preço: ${item.price}`}</p>
+        <p />
+      </div>
+    ));
     return (
       <div>
         { cartEmpty
