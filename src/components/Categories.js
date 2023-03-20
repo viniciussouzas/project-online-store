@@ -31,7 +31,7 @@ class Categories extends Component {
 
   render() {
     const { categories, categoryList } = this.state;
-    // Optamos por fazer o map dentro do render ao invés de dentro do return, retorna uma label que encapsula um p e um input radio
+    // Optamos por fazer o map dentro do render ao invés de dentro do return, retorna uma label que encapsula um p e um input
     const mappedCategories = categories.map((categorie) => (
       <label
         data-testid="category"
