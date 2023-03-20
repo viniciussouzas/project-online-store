@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getProductById } from '../services/api';
+import { setProductLocalStorage } from '../services/local';
 
 class ProductDetails extends Component {
   constructor() {
@@ -44,7 +45,13 @@ class ProductDetails extends Component {
         </div>
         <div>
           <h1 data-testid="product-detail-name">{ title }</h1>
-          <p data-testid="product-detail-price">{ price }</p>
+          <p data-testid="product-detail-price">{price}</p>
+          <button
+            data-testid="product-detail-add-to-cart"
+            onClick={ () => setProductLocalStorage(productDetails) }
+          >
+            Adcionar ao Carrinho
+          </button>
         </div>
       </div>
     );
