@@ -61,9 +61,9 @@ class Home extends Component {
         thumbnail={ product.thumbnail }
         title={ product.title }
         price={ product.price }
+        id={ product.id }
       />
     ));
-
     return (
       <div>
         <input
