@@ -3,6 +3,7 @@ import Categories from '../components/Categories';
 import ProductCard from '../components/ProductCard';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import CartIcon from '../components/CartIcon';
+import { getTotalProductQuantity } from '../services/local';
 
 class Home extends Component {
   constructor() {
@@ -11,6 +12,7 @@ class Home extends Component {
     this.state = {
       productList: [],
       emptyProductList: false,
+      productQuantity: getTotalProductQuantity(),
     };
   }
 
@@ -45,7 +47,7 @@ class Home extends Component {
   };
 
   render() {
-    const { productList, emptyProductList } = this.state;
+    const { productList, emptyProductList, productQuantity } = this.state;
     // Verifica se a lista esta vazia!
     const listEmpty = productList.length === 0;
 
@@ -88,7 +90,7 @@ class Home extends Component {
             </p>
           )}
 
-        <CartIcon data-testid="shopping-cart-size" />
+        <CartIcon productQuantity={ productQuantity } data-testid="shopping-cart-size" />
 
         <Categories />
       </div>
