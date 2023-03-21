@@ -8,7 +8,6 @@ export const getTotalProductQuantity = () => {
   const products = JSON.parse(localStorage.getItem('products')) || [];
 
   const productQuantity = products.reduce((acc, curr) => acc + curr.quantity, 0);
-  localStorage.setItem('productQuantity', JSON.stringify(productQuantity));
 
   return productQuantity;
 };
