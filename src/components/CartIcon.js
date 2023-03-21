@@ -32,9 +32,9 @@ class CartIcon extends Component {
       productQuant: productQuantity,
 
     }, () => {
-      const teste = JSON.parse(localStorage.getItem('productQuantity'));
+      JSON.parse(localStorage.getItem('productQuantity'));
 
-      localStorage.setItem('productQuantity', JSON.stringify(teste + productQuantity));
+      // localStorage.setItem('productQuantity', JSON.stringify(teste + productQuantity));
     });
   };
 
