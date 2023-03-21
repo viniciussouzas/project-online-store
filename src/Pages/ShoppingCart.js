@@ -15,6 +15,8 @@ class ShoppingCart extends Component {
 
     const { id } = target;
 
+    // Condicional que pega o id do item clicado e compara com o que está no estado, se igual, decrementa a propriedade quantity do item clicado, na tela e no localStorage
+
     const newCart = cart.map((item) => {
       if (id === item.id && item.quantity > 1) {
         return { ...item, quantity: item.quantity - 1 };
@@ -33,6 +35,8 @@ class ShoppingCart extends Component {
 
     const { id } = target;
 
+    // Condicional que pega o id do item clicado e compara com o que está no estado, se igual, incrementa a propriedade quantity do item clicado, na tela e no localStorage
+
     const newCart = cart.map((item) => {
       if (id === item.id) {
         return { ...item, quantity: item.quantity + 1 };
@@ -49,6 +53,8 @@ class ShoppingCart extends Component {
   handleRemove = ({ target }) => {
     const { id } = target;
     const { cart } = this.state;
+
+    // Condicional que verifica se o id do item clicado é diferente do que está no estado, se true, remove apenas o item clicado
 
     const newCart = cart.filter((item) => id !== item.id);
 
