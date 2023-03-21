@@ -30,18 +30,26 @@ class Home extends Component {
 
   handleFetchSearch = async () => {
     const { queryButton } = this.state;
-
-    const { results } = await getProductsFromCategoryAndQuery('', queryButton);
-
-    if (results.length === 0 || !queryButton) {
+    // Se input estiver vazio, atualiza estado para mostrar a mensagem
+    if (!queryButton) {
       this.setState({
         emptyProductList: true,
       });
+      return;
     }
 
-    this.setState({
-      productList: results,
-    });
+    const { results } = await getProductsFromCategoryAndQuery('', queryButton);
+
+    if (results.length === 0) {
+      this.setState({
+        emptyProductList: true,
+      });
+    } else {
+      this.setState({
+        emptyProductList: false,
+        productList: results,
+      });
+    }
   };
 
   render() {
