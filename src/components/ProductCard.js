@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { getProductLocalStorage } from '../services/local';
 
 class ProductCard extends Component {
   addToCart = () => {
     const { title, price, thumbnail, id } = this.props;
     const product = { title, price, thumbnail, id, quantity: 1 };
 
-    const storedProducts = JSON.parse(localStorage.getItem('products')) || [];
+    const storedProducts = getProductLocalStorage();
 
     const existingProduct = storedProducts.find((p) => p.id === id);
 

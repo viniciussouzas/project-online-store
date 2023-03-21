@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getProductById } from '../services/api';
-import { setProductLocalStorage } from '../services/local';
+import { getProductLocalStorage } from '../services/local';
 
 class ProductDetails extends Component {
   constructor() {
@@ -20,6 +20,28 @@ class ProductDetails extends Component {
   redirectToCart = () => {
     const { history } = this.props;
     return history.push('/cart');
+  };
+
+  addToCart = () => {
+    const { productDetails } = this.state;
+    const {
+      title,
+      thumbnail,
+      price,
+      id,
+    } = productDetails;
+    const product = { title, price, thumbnail, id, quantity: 1 };
+    const storedProducts = getProductLocalStorage();
+
+    const existingProduct = storedProducts.find((p) => p.id === id);
+
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      storedProducts.push(product);
+    }
+
+    localStorage.setItem('products', JSON.stringify(storedProducts));
   };
 
   render() {
@@ -48,7 +70,7 @@ class ProductDetails extends Component {
           <p data-testid="product-detail-price">{price}</p>
           <button
             data-testid="product-detail-add-to-cart"
-            onClick={ () => setProductLocalStorage(productDetails) }
+            onClick={ this.addToCart }
           >
             Adcionar ao Carrinho
           </button>

@@ -56,6 +56,7 @@ class Categories extends Component {
     const mappedList = categoryList.map((category) => (
       // Renderiza lista da categoria selecionada
       <ProductCard
+        id={ category.id }
         key={ category.id }
         title={ category.title }
         price={ category.price }
