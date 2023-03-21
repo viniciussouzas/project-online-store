@@ -70,6 +70,7 @@ class Home extends Component {
         title={ product.title }
         price={ product.price }
         id={ product.id }
+        shipping={ product.shipping }
       />
     ));
     return (
