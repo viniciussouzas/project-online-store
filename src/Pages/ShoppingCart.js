@@ -5,12 +5,28 @@ class ShoppingCart extends Component {
   constructor() {
     super();
 
-    // const cartItems = JSON.parse(localStorage.getItem('products')) || [];
-
     this.state = {
       cart: getProductLocalStorage(),
     };
   }
+
+  handleDecrement = ({ target }) => {
+    const { cart } = this.state;
+
+    const { id } = target;
+
+    const newCart = cart.map((item) => {
+      if (id === item.id && item.quantity > 1) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+
+      return item;
+    });
+
+    this.setState({
+      cart: newCart,
+    }, localStorage.setItem('products', JSON.stringify(newCart)));
+  };
 
   handleIncrement = ({ target }) => {
     const { cart } = this.state;
@@ -27,11 +43,18 @@ class ShoppingCart extends Component {
 
     this.setState({
       cart: newCart,
-    });
+    }, localStorage.setItem('products', JSON.stringify(newCart)));
+  };
 
-    localStorage.setItem('products', JSON.stringify(cart));
+  handleRemove = ({ target }) => {
+    const { id } = target;
+    const { cart } = this.state;
 
-    console.log(cart);
+    const newCart = cart.filter((item) => id !== item.id);
+
+    this.setState({
+      cart: newCart,
+    }, localStorage.setItem('products', JSON.stringify(newCart)));
   };
 
   render() {
@@ -43,9 +66,10 @@ class ShoppingCart extends Component {
         <img src={ item.thumbnail } alt={ item.title } />
         <h2 data-testid="shopping-cart-product-name">{item.title}</h2>
         <button
+          id={ item.id }
           type="button"
           data-testid="remove-product"
-          // onClick={}
+          onClick={ this.handleRemove }
         >
           Remover
         </button>
@@ -55,9 +79,10 @@ class ShoppingCart extends Component {
           {`Quantidade: ${item.quantity}`}
         </p>
         <button
+          id={ item.id }
           type="button"
           data-testid="product-decrease-quantity"
-          // onClick={}
+          onClick={ this.handleDecrement }
         >
           -
         </button>
