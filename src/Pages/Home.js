@@ -30,7 +30,7 @@ class Home extends Component {
 
   handleFetchSearch = async () => {
     const { queryButton } = this.state;
-
+    // Se input estiver vazio, atualiza estado para mostrar a mensagem
     if (!queryButton) {
       this.setState({
         emptyProductList: true,
