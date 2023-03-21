@@ -4,6 +4,13 @@ export const getProductLocalStorage = () => {
   return localItems ?? [];
 };
 
+export const getTotalProductQuantity = () => {
+  const products = JSON.parse(localStorage.getItem('products')) || [];
+
+  const productQuantity = products.reduce((acc, curr) => acc + curr.quantity, 0);
+
+  return productQuantity;
+};
 // Adciona o produto atual ao localStorage do carrinho
 // export const setProductLocalStorage = (productDetails) => {
 //   const localItems = getProductLocalStorage();
