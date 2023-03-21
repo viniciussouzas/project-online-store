@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getProductLocalStorage } from '../services/local';
 
 class ShoppingCart extends Component {
@@ -63,6 +64,11 @@ class ShoppingCart extends Component {
     }, localStorage.setItem('products', JSON.stringify(newCart)));
   };
 
+  redirect = () => {
+    const { history } = this.props;
+    history.push('/checkout');
+  };
+
   render() {
     const { cart } = this.state;
 
@@ -109,10 +115,24 @@ class ShoppingCart extends Component {
       <div>
         { cartEmpty
           ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-          : mappedCart }
+          : mappedCart}
+        <div>
+          <button
+            data-testid="checkout-products"
+            onClick={ this.redirect }
+          >
+            Finalizar Compra!
+          </button>
+        </div>
       </div>
     );
   }
 }
+
+ShoppingCart.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default ShoppingCart;
