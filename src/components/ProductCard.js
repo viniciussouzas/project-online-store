@@ -19,6 +19,10 @@ class ProductCard extends Component {
     }
 
     localStorage.setItem('products', JSON.stringify(storedProducts));
+
+    const productQuantity = JSON.parse(localStorage.getItem('productQuantity'));
+
+    localStorage.setItem('productQuantity', JSON.stringify(productQuantity + 1));
   };
 
   render() {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { getProductLocalStorage } from '../services/local';
 
 class CartIcon extends Component {
   constructor() {
@@ -7,7 +8,13 @@ class CartIcon extends Component {
 
     this.state = {
       redirect: false,
+      products: getProductLocalStorage(),
+      productQuant: 0,
     };
+  }
+
+  componentDidMount() {
+    this.handleCartIcon();
   }
 
   onClickButton = () => {
@@ -16,9 +23,25 @@ class CartIcon extends Component {
     });
   };
 
+  handleCartIcon = () => {
+    const { products } = this.state;
+
+    const productQuantity = products.reduce((acc, curr) => acc + curr.quantity, 0);
+
+    this.setState({
+      productQuant: productQuantity,
+
+    }, () => {
+      const teste = JSON.parse(localStorage.getItem('productQuantity'));
+
+      localStorage.setItem('productQuantity', JSON.stringify(teste + productQuantity));
+    });
+  };
+
   render() {
     const {
       redirect,
+      productQuant,
     } = this.state;
 
     // Verifica se redirect é true
@@ -27,14 +50,14 @@ class CartIcon extends Component {
     // Redireciona
     if (isRedirect) return <Redirect to="/cart" />;
 
-    const products = JSON.parse(localStorage.getItem('products'));
+    // const products = JSON.parse(localStorage.getItem('products'));
 
-    const productQuantity = products.reduce((acc, curr) => acc + curr.quantity, 0);
-    const currProducts = JSON.parse(localStorage.getItem('productQuantity'));
-    localStorage.setItem('productQuantity', JSON.stringify(productQuantity));
+    // const productQuantity = products.reduce((acc, curr) => acc + curr.quantity, 0);
+    // localStorage.setItem('productQuantity', JSON.stringify(productQuantity));
+    // const currProducts = JSON.parse(localStorage.getItem('productQuantity'));
 
-    console.log(productQuantity);
-    console.log(currProducts);
+    // console.log(productQuantity);
+    // console.log(currProducts);
 
     return (
       <button
@@ -42,7 +65,7 @@ class CartIcon extends Component {
         data-testid="shopping-cart-button"
         onClick={ this.onClickButton }
       >
-        {productQuantity}
+        {productQuant}
 
       </button>
     );
