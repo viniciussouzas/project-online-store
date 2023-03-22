@@ -65,6 +65,7 @@ class Categories extends Component {
         thumbnail={ category.thumbnail }
         data-testid="product"
         updateQuant={ updateQuant }
+        shipping={ category.shipping }
       />));
 
     return (

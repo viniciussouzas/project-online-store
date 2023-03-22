@@ -4,6 +4,7 @@ import './App.css';
 import ProductDetails from './Pages/ProductDetails';
 import Home from './Pages/Home';
 import ShoppingCart from './Pages/ShoppingCart';
+import Checkout from './Pages/Checkout';
 
 class App extends React.Component {
   constructor() {
@@ -61,6 +62,7 @@ class App extends React.Component {
               updateQuant={ this.updateQuant }
             />) }
           />
+          <Route exact path="/checkout" component={ Checkout } />
         </Switch>
       </main>
     );

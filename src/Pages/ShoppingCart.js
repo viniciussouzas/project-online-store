@@ -73,6 +73,11 @@ class ShoppingCart extends Component {
     updateQuant();
   };
 
+  redirect = () => {
+    const { history } = this.props;
+    history.push('/checkout');
+  };
+
   render() {
     const { cart } = this.state;
 
@@ -119,7 +124,15 @@ class ShoppingCart extends Component {
       <div>
         { cartEmpty
           ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-          : mappedCart }
+          : mappedCart}
+        <div>
+          <button
+            data-testid="checkout-products"
+            onClick={ this.redirect }
+          >
+            Finalizar Compra!
+          </button>
+        </div>
       </div>
     );
   }
@@ -127,6 +140,9 @@ class ShoppingCart extends Component {
 
 ShoppingCart.propTypes = {
   updateQuant: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default ShoppingCart;

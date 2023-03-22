@@ -65,6 +65,7 @@ class Home extends Component {
         price={ product.price }
         id={ product.id }
         updateQuant={ updateQuant }
+        shipping={ product.shipping }
       />
     ));
     return (

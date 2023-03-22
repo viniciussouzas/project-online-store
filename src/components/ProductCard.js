@@ -4,6 +4,21 @@ import { Link } from 'react-router-dom';
 import { getProductLocalStorage } from '../services/local';
 
 class ProductCard extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      freeShipping: false,
+    };
+  }
+
+  componentDidMount() {
+    const { shipping } = this.props;
+    if (shipping !== undefined) {
+      this.setState({ freeShipping: shipping.free_shipping });
+    }
+  }
+
   addToCart = () => {
     const { title, price, thumbnail, id, updateQuant } = this.props;
     const product = { title, price, thumbnail, id, quantity: 1 };
@@ -25,17 +40,17 @@ class ProductCard extends Component {
 
   render() {
     const { title, price, thumbnail, id } = this.props;
+    const { freeShipping } = this.state;
 
     return (
       <div data-testid="product">
         <Link to={ `/productDetails/${id}` } data-testid="product-detail-link">
+          { freeShipping ? <span data-testid="free-shipping">Frete grátis</span> : <p /> }
           <img src={ thumbnail } alt={ title } />
           <p>{title}</p>
           <p>{price}</p>
         </Link>
 
-        <p>{title}</p>
-        <p>{price}</p>
         <button
           onClick={ this.addToCart }
           data-testid="product-add-to-cart"
@@ -54,6 +69,9 @@ ProductCard.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   updateQuant: PropTypes.func.isRequired,
+  shipping: PropTypes.shape({
+    free_shipping: PropTypes.bool.isRequired,
+  }).isRequired,
 };
 
 export default ProductCard;
