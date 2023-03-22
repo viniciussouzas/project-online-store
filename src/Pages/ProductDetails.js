@@ -110,12 +110,10 @@ class ProductDetails extends Component {
     const rate3 = 3;
     const rate4 = 4;
     const rate5 = 5;
-
     const localEvaluations = JSON.parse(localStorage.getItem(productDetails.id)) || [];
 
     return (
       <div>
-
         <div>
           <button
             data-testid="shopping-cart-button"
@@ -125,11 +123,9 @@ class ProductDetails extends Component {
           </button>
           <CartIcon productQuant={ productQuant } />
         </div>
-
         <div>
           <img alt={ title } src={ thumbnail } data-testid="product-detail-image" />
         </div>
-
         <div>
           <h1 data-testid="product-detail-name">{ title }</h1>
           <p
@@ -147,7 +143,6 @@ class ProductDetails extends Component {
 
         <fieldset>
           <legend>Avaliações</legend>
-
           <label>
             <input
               type="radio"
@@ -185,7 +180,6 @@ class ProductDetails extends Component {
               onChange={ this.handleChange }
             />
           </label>
-
           <div>
             <input
               type="email"
@@ -196,7 +190,6 @@ class ProductDetails extends Component {
               placeholder="Email"
             />
           </div>
-
           <label>
             <textarea
               type="text"
@@ -207,7 +200,6 @@ class ProductDetails extends Component {
               placeholder="Avaliação"
             />
           </label>
-
           <div>
             <button
               data-testid="submit-review-btn"
@@ -218,11 +210,9 @@ class ProductDetails extends Component {
             </button>
           </div>
         </fieldset>
-
         <div>
           { verifyForm && <p data-testid="error-msg">Campos inválidos</p> }
         </div>
-
         <div>
           { localEvaluations.map((evaluation) => (
             <div key={ evaluation.text }>
@@ -250,5 +240,4 @@ ProductDetails.propTypes = {
     }).isRequired,
   }).isRequired,
 };
-
 export default ProductDetails;
