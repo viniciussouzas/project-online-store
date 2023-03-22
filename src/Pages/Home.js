@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Categories from '../components/Categories';
 import ProductCard from '../components/ProductCard';
 import { getProductsFromCategoryAndQuery } from '../services/api';
@@ -13,6 +14,11 @@ class Home extends Component {
       emptyProductList: false,
     };
   }
+
+  redirectToCart = () => {
+    const { history } = this.props;
+    return history.push('/cart');
+  };
 
   onInputChange = ({ target }) => {
     this.setState({
@@ -46,6 +52,7 @@ class Home extends Component {
 
   render() {
     const { productList, emptyProductList } = this.state;
+    const { productQuant, updateQuant } = this.props;
     // Verifica se a lista esta vazia!
     const listEmpty = productList.length === 0;
 
@@ -57,6 +64,7 @@ class Home extends Component {
         title={ product.title }
         price={ product.price }
         id={ product.id }
+        updateQuant={ updateQuant }
       />
     ));
     return (
@@ -88,12 +96,28 @@ class Home extends Component {
             </p>
           )}
 
-        <CartIcon data-testid="shopping-cart-size" />
+        <button
+          type="button"
+          data-testid="shopping-cart-button"
+          onClick={ this.redirectToCart }
+        >
+          Carrinho de Compras
+        </button>
 
-        <Categories />
+        <CartIcon productQuant={ productQuant } />
+
+        <Categories updateQuant={ updateQuant } />
       </div>
     );
   }
 }
+
+Home.propTypes = {
+  productQuant: PropTypes.number.isRequired,
+  updateQuant: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Home;

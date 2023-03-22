@@ -5,7 +5,7 @@ import { getProductLocalStorage } from '../services/local';
 
 class ProductCard extends Component {
   addToCart = () => {
-    const { title, price, thumbnail, id } = this.props;
+    const { title, price, thumbnail, id, updateQuant } = this.props;
     const product = { title, price, thumbnail, id, quantity: 1 };
 
     const storedProducts = getProductLocalStorage();
@@ -20,9 +20,7 @@ class ProductCard extends Component {
 
     localStorage.setItem('products', JSON.stringify(storedProducts));
 
-    const productQuantity = JSON.parse(localStorage.getItem('productQuantity'));
-
-    localStorage.setItem('productQuantity', JSON.stringify(productQuantity + 1));
+    updateQuant();
   };
 
   render() {
@@ -55,6 +53,7 @@ ProductCard.propTypes = {
   price: PropTypes.number.isRequired,
   thumbnail: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  updateQuant: PropTypes.func.isRequired,
 };
 
 export default ProductCard;

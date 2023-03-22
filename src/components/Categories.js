@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from './ProductCard';
 
@@ -31,6 +32,7 @@ class Categories extends Component {
 
   render() {
     const { categories, categoryList } = this.state;
+    const { updateQuant } = this.props;
     // Optamos por fazer o map dentro do render ao invés de dentro do return, retorna uma label que encapsula um p e um input
     const mappedCategories = categories.map((categorie) => (
       <label
@@ -62,6 +64,7 @@ class Categories extends Component {
         price={ category.price }
         thumbnail={ category.thumbnail }
         data-testid="product"
+        updateQuant={ updateQuant }
       />));
 
     return (
@@ -72,5 +75,9 @@ class Categories extends Component {
     );
   }
 }
+
+Categories.propTypes = {
+  updateQuant: PropTypes.func.isRequired,
+};
 
 export default Categories;

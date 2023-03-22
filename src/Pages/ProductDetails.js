@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getProductById } from '../services/api';
 import { getProductLocalStorage } from '../services/local';
+import CartIcon from '../components/CartIcon';
 
 class ProductDetails extends Component {
   constructor() {
@@ -24,6 +25,7 @@ class ProductDetails extends Component {
 
   addToCart = () => {
     const { productDetails } = this.state;
+    const { updateQuant } = this.props;
     const {
       title,
       thumbnail,
@@ -42,6 +44,8 @@ class ProductDetails extends Component {
     }
 
     localStorage.setItem('products', JSON.stringify(storedProducts));
+
+    updateQuant();
   };
 
   render() {
@@ -52,6 +56,8 @@ class ProductDetails extends Component {
       price,
     } = productDetails;
 
+    const { productQuant } = this.props;
+
     return (
       <div>
         <div>
@@ -59,8 +65,9 @@ class ProductDetails extends Component {
             data-testid="shopping-cart-button"
             onClick={ this.redirectToCart }
           >
-            Carrinho
+            Carrinho de Compras
           </button>
+          <CartIcon productQuant={ productQuant } />
         </div>
         <div>
           <img alt={ title } src={ thumbnail } data-testid="product-detail-image" />
@@ -72,7 +79,7 @@ class ProductDetails extends Component {
             data-testid="product-detail-add-to-cart"
             onClick={ this.addToCart }
           >
-            Adcionar ao Carrinho
+            Adicionar ao Carrinho
           </button>
         </div>
       </div>
@@ -81,6 +88,8 @@ class ProductDetails extends Component {
 }
 
 ProductDetails.propTypes = {
+  updateQuant: PropTypes.func.isRequired,
+  productQuant: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
