@@ -13,6 +13,7 @@ class ShoppingCart extends Component {
 
   handleDecrement = ({ target }) => {
     const { cart } = this.state;
+    const { updateQuant } = this.props;
 
     const { id } = target;
 
@@ -29,10 +30,13 @@ class ShoppingCart extends Component {
     this.setState({
       cart: newCart,
     }, localStorage.setItem('products', JSON.stringify(newCart)));
+
+    updateQuant();
   };
 
   handleIncrement = ({ target }) => {
     const { cart } = this.state;
+    const { updateQuant } = this.props;
 
     const { id } = target;
 
@@ -49,11 +53,14 @@ class ShoppingCart extends Component {
     this.setState({
       cart: newCart,
     }, localStorage.setItem('products', JSON.stringify(newCart)));
+
+    updateQuant();
   };
 
   handleRemove = ({ target }) => {
     const { id } = target;
     const { cart } = this.state;
+    const { updateQuant } = this.props;
 
     // Condicional que verifica se o id do item clicado é diferente do que está no estado, se true, remove apenas o item clicado
 
@@ -62,6 +69,8 @@ class ShoppingCart extends Component {
     this.setState({
       cart: newCart,
     }, localStorage.setItem('products', JSON.stringify(newCart)));
+
+    updateQuant();
   };
 
   redirect = () => {
@@ -130,6 +139,7 @@ class ShoppingCart extends Component {
 }
 
 ShoppingCart.propTypes = {
+  updateQuant: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Categories from '../components/Categories';
 import ProductCard from '../components/ProductCard';
 import { getProductsFromCategoryAndQuery } from '../services/api';
+import CartIcon from '../components/CartIcon';
 
 class Home extends Component {
   constructor() {
@@ -10,21 +11,18 @@ class Home extends Component {
 
     this.state = {
       productList: [],
-      redirect: false,
       emptyProductList: false,
     };
   }
 
+  redirectToCart = () => {
+    const { history } = this.props;
+    return history.push('/cart');
+  };
+
   onInputChange = ({ target }) => {
     this.setState({
       [target.name]: target.value,
-    });
-  };
-
-  // Após o click seta o estado para true, if redirect === true, redireciona para /cart
-  onClickButton = () => {
-    this.setState({
-      redirect: true,
     });
   };
 
@@ -53,14 +51,10 @@ class Home extends Component {
   };
 
   render() {
-    const { productList, redirect, emptyProductList } = this.state;
+    const { productList, emptyProductList } = this.state;
+    const { productQuant, updateQuant } = this.props;
     // Verifica se a lista esta vazia!
     const listEmpty = productList.length === 0;
-    // Verifica se redirect é true
-    const isRedirect = redirect === true;
-
-    // Redireciona
-    if (isRedirect) return <Redirect to="/cart" />;
 
     // Map do estado productList, que renderiza a lista de produtos pesquisados
     const mappedProductList = productList.map((product) => (
@@ -70,6 +64,7 @@ class Home extends Component {
         title={ product.title }
         price={ product.price }
         id={ product.id }
+        updateQuant={ updateQuant }
         shipping={ product.shipping }
       />
     ));
@@ -105,15 +100,25 @@ class Home extends Component {
         <button
           type="button"
           data-testid="shopping-cart-button"
-          onClick={ this.onClickButton }
+          onClick={ this.redirectToCart }
         >
           Carrinho de Compras
         </button>
 
-        <Categories />
+        <CartIcon productQuant={ productQuant } />
+
+        <Categories updateQuant={ updateQuant } />
       </div>
     );
   }
 }
+
+Home.propTypes = {
+  productQuant: PropTypes.number.isRequired,
+  updateQuant: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Home;

@@ -20,7 +20,7 @@ class ProductCard extends Component {
   }
 
   addToCart = () => {
-    const { title, price, thumbnail, id } = this.props;
+    const { title, price, thumbnail, id, updateQuant } = this.props;
     const product = { title, price, thumbnail, id, quantity: 1 };
 
     const storedProducts = getProductLocalStorage();
@@ -34,6 +34,8 @@ class ProductCard extends Component {
     }
 
     localStorage.setItem('products', JSON.stringify(storedProducts));
+
+    updateQuant();
   };
 
   render() {
@@ -66,6 +68,7 @@ ProductCard.propTypes = {
   price: PropTypes.number.isRequired,
   thumbnail: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  updateQuant: PropTypes.func.isRequired,
   shipping: PropTypes.shape({
     free_shipping: PropTypes.bool.isRequired,
   }).isRequired,
