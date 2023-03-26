@@ -20,15 +20,19 @@ class ProductCard extends Component {
   }
 
   addToCart = () => {
-    const { title, price, thumbnail, id, updateQuant } = this.props;
-    const product = { title, price, thumbnail, id, quantity: 1 };
+    const { title, price, thumbnail, id, updateQuant, availableQuantity } = this.props;
+    const product = { title, price, thumbnail, id, quantity: 1, availableQuantity };
+    console.log(product);
 
     const storedProducts = getProductLocalStorage();
 
-    const existingProduct = storedProducts.find((p) => p.id === id);
+    const existingProduct = storedProducts
+      .find((p) => p.id === id && p.quantity < p.availableQuantity);
 
     if (existingProduct) {
       existingProduct.quantity += 1;
+    } else if (existingProduct !== undefined) {
+      storedProducts.push(product);
     } else {
       storedProducts.push(product);
     }
@@ -72,6 +76,11 @@ ProductCard.propTypes = {
   shipping: PropTypes.shape({
     free_shipping: PropTypes.bool.isRequired,
   }).isRequired,
+  availableQuantity: PropTypes.number,
+};
+
+ProductCard.defaultProps = {
+  availableQuantity: 1,
 };
 
 export default ProductCard;

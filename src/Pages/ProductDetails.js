@@ -19,7 +19,6 @@ class ProductDetails extends Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const data = await getProductById(id);
-    console.log(data);
     this.setState({ productDetails: data });
   }
 
@@ -37,14 +36,15 @@ class ProductDetails extends Component {
       price,
       id,
     } = productDetails;
-    const product = { title, price, thumbnail, id, quantity: 1 };
+    const availableQuantity = productDetails.available_quantity;
+    const product = { title, price, thumbnail, id, quantity: 1, availableQuantity };
     const storedProducts = getProductLocalStorage();
-
-    const existingProduct = storedProducts.find((p) => p.id === id);
+    const existingProduct = storedProducts
+      .find((p) => (p.id === id && p.quantity < p.availableQuantity));
 
     if (existingProduct) {
       existingProduct.quantity += 1;
-    } else {
+    } else if (existingProduct !== undefined) {
       storedProducts.push(product);
     }
 
@@ -102,17 +102,13 @@ class ProductDetails extends Component {
       thumbnail,
       price,
     } = productDetails;
-
     const { productQuant } = this.props;
-
     const rate1 = 1;
     const rate2 = 2;
     const rate3 = 3;
     const rate4 = 4;
     const rate5 = 5;
-
     const localEvaluations = JSON.parse(localStorage.getItem(productDetails.id)) || [];
-
     return (
       <div>
 
