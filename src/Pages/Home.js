@@ -66,6 +66,7 @@ class Home extends Component {
         id={ product.id }
         updateQuant={ updateQuant }
         shipping={ product.shipping }
+        availableQuantity={ product.available_quantity }
       />
     ));
     return (
@@ -114,11 +115,15 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  productQuant: PropTypes.number.isRequired,
+  productQuant: PropTypes.number,
   updateQuant: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+};
+
+Home.defaultProps = {
+  productQuant: 0,
 };
 
 export default Home;

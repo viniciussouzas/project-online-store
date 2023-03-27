@@ -66,6 +66,7 @@ class Categories extends Component {
         data-testid="product"
         updateQuant={ updateQuant }
         shipping={ category.shipping }
+        availableQuantity={ category.available_quantity }
       />));
 
     return (
